@@ -1,26 +1,307 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ── OpenServ palette ─────────────────────────────── */
+  --canvas-white: #ffffff;
+  --ink-black: #000000;
+  --fog-gray: #f5f5f5;
+  --steel-gray: #a6a6a6;
+  --graphite: #4d4d4d;
+  --deep-blue: #5f79ff;
+  --deep-blue-hover: #4861e0;
+  --electric-green: #01fe93;
+
+  /* ── Semantic tokens ───────────────────────────────── */
+  --background: var(--canvas-white);
+  --background-2: var(--fog-gray);
+  --foreground: var(--ink-black);
+  --muted: var(--graphite);
+  --muted-soft: var(--steel-gray);
+
+  --accent: var(--deep-blue);
+  --accent-hover: var(--deep-blue-hover);
+  --accent-glow: rgba(95, 121, 255, 0.20);
+  --convert: var(--electric-green);
+
+  --border: rgba(0, 0, 0, 0.1);
+  --glass: var(--fog-gray);
+  --glass-border: rgba(0, 0, 0, 0.08);
+
+  /* Legacy aliases (warm theme names → light theme values) */
+  --or: var(--deep-blue);
+  --or-light: var(--deep-blue);
+  --or-glow: var(--accent-glow);
+
+  --radius-buttons: 12px;
+  --radius-card: 16px;
+  --radius-hero: 40px;
+  --radius-pill: 100px;
+  --shadow-xl: rgba(0, 0, 0, 0.1) 0px 0px 48px 0px;
 }
 
 @theme inline {
+  --color-canvas-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-fog-gray: #f5f5f5;
+  --color-steel-gray: #a6a6a6;
+  --color-graphite: #4d4d4d;
+  --color-deep-blue: #5f79ff;
+  --color-electric-green: #01fe93;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-sans: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  /* Legacy alias so var(--font-lora) resolves to the new display face */
+  --font-lora: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* OpenServ display headlines: light weight, tight tracking */
+.font-display {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { animation: fade-in 0.4s ease-out both; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.16s; }
+.delay-3 { animation-delay: 0.24s; }
+.delay-4 { animation-delay: 0.32s; }
+.delay-5 { animation-delay: 0.40s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+.animate-float { animation: float 7s ease-in-out infinite; }
+
+/* Soft blue glow used behind hero sections (recolored for light theme) */
+.glow-orb {
+  background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
+  filter: blur(40px);
+}
+
+/* Grain disabled on the light theme — kept as a no-op so refs don't break */
+.grain { display: none; }
+
+/* Gradient text using the deep-blue accent */
+.text-gradient {
+  background: linear-gradient(135deg, var(--deep-blue), var(--deep-blue-hover));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-up,
+  .animate-float {
+    animation: none;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Animation toolkit (added for landing/gallery/scan polish)
+   Pure CSS + IntersectionObserver. All gated by prefers-reduced-motion.
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Scroll reveal: hidden until .is-visible is toggled by observer ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger children when the parent gets .is-visible */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.00s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.32s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; }
+
+/* ── Hero aurora: slow drifting blue/green gradient blobs ── */
+@keyframes aurora-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(6%, -4%) scale(1.12); }
+  66%  { transform: translate(-5%, 5%) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+.aurora {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 130%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+}
+.aurora::before {
+  width: 46rem; height: 46rem;
+  top: -12rem; left: -6rem;
+  background: radial-gradient(circle at center, var(--accent-glow), transparent 65%);
+  animation: aurora-drift 18s ease-in-out infinite;
+}
+.aurora::after {
+  width: 40rem; height: 40rem;
+  top: -6rem; right: -8rem;
+  background: radial-gradient(circle at center, rgba(1, 254, 147, 0.16), transparent 65%);
+  animation: aurora-drift 22s ease-in-out infinite reverse;
+}
+
+/* ── Photo "rescue" entrance: rise + slight rotate-settle ── */
+@keyframes rescue-in {
+  0%   { opacity: 0; transform: translateY(40px) rotate(var(--rot, 0deg)) scale(0.92); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)) scale(1); }
+}
+.animate-rescue { animation: rescue-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── Gallery tile fade-in (used per-photo with inline delay) ── */
+@keyframes tile-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-tile { animation: tile-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* ── Shimmer sweep (for the scanning state) ── */
+@keyframes sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.scan-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.scan-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(95,121,255,0.12), transparent);
+  animation: sweep 1.8s ease-in-out infinite;
+}
+
+/* ── Pulsing scan ring ── */
+@keyframes scan-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(95,121,255,0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(95,121,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(95,121,255,0); }
+}
+.animate-scan-pulse { animation: scan-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+
+/* ── Gentle hover lift utility ── */
+.lift { transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease; }
+.lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .aurora::before, .aurora::after,
+  .animate-rescue, .animate-tile, .scan-sweep::after, .animate-scan-pulse {
+    animation: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Professional depth pass: subtle texture + card elevation
+   ════════════════════════════════════════════════════════════ */
+
+/* Body gets a faint dot-grid texture + a soft cool wash at the top, so
+   "white" reads as considered light, not flat. Fixed so it doesn't scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 22px 22px;
+  /* fade the grid out toward the bottom so it's strongest up top */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 60%, transparent);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 60%, transparent);
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 60vh;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 60% at 50% -10%, rgba(95, 121, 255, 0.06), transparent 70%);
+}
+/* Keep app content above the texture layers. */
+body > * { position: relative; z-index: 1; }
+
+/* ── Card elevation tiers ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.04),
+    0 1px 3px rgba(16, 24, 40, 0.06);
+  transition: box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover {
+  box-shadow:
+    0 8px 16px -4px rgba(16, 24, 40, 0.08),
+    0 20px 40px -8px rgba(16, 24, 40, 0.10);
+  transform: translateY(-3px);
+}
+/* Elevated/featured card (pricing, paywall, CTA blocks). */
+.card-elevated {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 4px 8px -2px rgba(16, 24, 40, 0.06),
+    0 24px 48px -12px rgba(16, 24, 40, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .card-hover { transition: none; }
 }
