@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import { CountUp } from '@/components/ui/CountUp';
 import { TextAnimate } from '@/components/ui/TextAnimate';
+import { WaitlistForm } from '@/components/waitlist/WaitlistForm';
+import { WAITLIST_MODE } from '@/lib/flags';
 
 const SAMPLE_PHOTOS = [
   { src: '/samples/beach-family.jpg', caption: 'Summer 2014', rot: '-5deg' },
@@ -90,13 +92,23 @@ export default function LandingPage() {
             >
               Sign in
             </Link>
-            <Link
-              href="/signup"
-              className="px-5 py-2.5 text-[15px] font-medium text-white transition hover:brightness-95"
-              style={{ background: 'var(--deep-blue)', borderRadius: 'var(--radius-pill)' }}
-            >
-              Get started
-            </Link>
+            {WAITLIST_MODE ? (
+              <a
+                href="#waitlist"
+                className="px-5 py-2.5 text-[15px] font-medium text-white transition hover:brightness-95"
+                style={{ background: 'var(--deep-blue)', borderRadius: 'var(--radius-pill)' }}
+              >
+                Join waitlist
+              </a>
+            ) : (
+              <Link
+                href="/signup"
+                className="px-5 py-2.5 text-[15px] font-medium text-white transition hover:brightness-95"
+                style={{ background: 'var(--deep-blue)', borderRadius: 'var(--radius-pill)' }}
+              >
+                Get started
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -113,7 +125,7 @@ export default function LandingPage() {
           }}
         >
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--deep-blue)' }} />
-          Uncover your memories · Clear the clutter
+          {WAITLIST_MODE ? 'Coming soon · Join the waitlist' : 'Uncover your memories · Clear the clutter'}
         </div>
 
         <h1 className="font-display text-5xl leading-[0.95] sm:text-6xl md:text-7xl">
@@ -135,28 +147,36 @@ export default function LandingPage() {
         </p>
 
         <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link
-            href="/signup"
-            className="px-8 py-4 text-[18px] font-medium transition hover:brightness-95"
-            style={{
-              background: 'var(--electric-green)',
-              color: 'var(--ink-black)',
-              borderRadius: 'var(--radius-pill)',
-            }}
-          >
-            Uncover my memories — $19
-          </Link>
-          <Link
-            href="#how"
-            className="px-8 py-4 text-[18px] font-medium transition hover:bg-black/[0.03]"
-            style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-pill)' }}
-          >
-            See how it works
-          </Link>
+          {WAITLIST_MODE ? (
+            <WaitlistForm id="waitlist" />
+          ) : (
+            <>
+              <Link
+                href="/signup"
+                className="px-8 py-4 text-[18px] font-medium transition hover:brightness-95"
+                style={{
+                  background: 'var(--electric-green)',
+                  color: 'var(--ink-black)',
+                  borderRadius: 'var(--radius-pill)',
+                }}
+              >
+                Uncover my memories — $19
+              </Link>
+              <Link
+                href="#how"
+                className="px-8 py-4 text-[18px] font-medium transition hover:bg-black/[0.03]"
+                style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-pill)' }}
+              >
+                See how it works
+              </Link>
+            </>
+          )}
         </div>
 
         <p className="mt-8 text-[13px]" style={{ color: 'var(--steel-gray)' }}>
-          No subscription · One-time payment · 30-day money-back guarantee
+          {WAITLIST_MODE
+            ? 'Be the first to know when we launch.'
+            : 'No subscription · One-time payment · 30-day money-back guarantee'}
         </p>
 
         <p className="mt-4 text-[15px] font-medium" style={{ color: 'var(--deep-blue)' }}>
@@ -382,17 +402,23 @@ export default function LandingPage() {
             Uncover the memories hiding in your inbox and sweep out the junk in one
             pass — for less than a month of a storage upgrade.
           </p>
-          <Link
-            href="/signup"
-            className="mt-10 inline-block px-8 py-4 text-[18px] font-medium transition hover:brightness-95"
-            style={{
-              background: 'var(--electric-green)',
-              color: 'var(--ink-black)',
-              borderRadius: 'var(--radius-pill)',
-            }}
-          >
-            Uncover my memories — $19
-          </Link>
+          {WAITLIST_MODE ? (
+            <div className="mt-10">
+              <WaitlistForm />
+            </div>
+          ) : (
+            <Link
+              href="/signup"
+              className="mt-10 inline-block px-8 py-4 text-[18px] font-medium transition hover:brightness-95"
+              style={{
+                background: 'var(--electric-green)',
+                color: 'var(--ink-black)',
+                borderRadius: 'var(--radius-pill)',
+              }}
+            >
+              Uncover my memories — $19
+            </Link>
+          )}
         </div>
       </section>
 
