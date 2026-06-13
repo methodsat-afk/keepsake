@@ -98,7 +98,7 @@ export default function LandingPage() {
                 className="px-5 py-2.5 text-[15px] font-medium text-white transition hover:brightness-95"
                 style={{ background: 'var(--deep-blue)', borderRadius: 'var(--radius-pill)' }}
               >
-                Join waitlist
+                Join free — no credit card
               </a>
             ) : (
               <Link
@@ -125,7 +125,7 @@ export default function LandingPage() {
           }}
         >
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: 'var(--deep-blue)' }} />
-          {WAITLIST_MODE ? 'Coming soon · Join the waitlist' : 'Uncover your memories · Clear the clutter'}
+          {WAITLIST_MODE ? 'Coming soon · Free early access' : 'Uncover your memories · Clear the clutter'}
         </div>
 
         <h1 className="font-display text-5xl leading-[0.95] sm:text-6xl md:text-7xl">
@@ -175,7 +175,7 @@ export default function LandingPage() {
 
         <p className="mt-8 text-[13px]" style={{ color: 'var(--steel-gray)' }}>
           {WAITLIST_MODE
-            ? 'Be the first to know when we launch.'
+            ? 'Free to join · No credit card · Be first when we launch'
             : 'No subscription · One-time payment · 30-day money-back guarantee'}
         </p>
 

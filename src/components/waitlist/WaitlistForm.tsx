@@ -79,7 +79,7 @@ export function WaitlistForm({ id }: { id?: string }) {
           cursor: state === 'loading' ? 'not-allowed' : 'pointer',
         }}
       >
-        {state === 'loading' ? 'Joining…' : 'Join the waitlist'}
+        {state === 'loading' ? 'Joining…' : 'Join free'}
       </button>
       {state === 'error' && (
         <p className="w-full text-center text-sm sm:w-auto" style={{ color: '#ef4444' }}>
