@@ -65,7 +65,7 @@ const FAQ = [
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen" style={{ background: 'var(--canvas-white)', color: 'var(--ink-black)' }}>
       {/* ── Elevated navigation ─────────────────────────── */}
       <nav className="sticky top-0 z-50">
         <div

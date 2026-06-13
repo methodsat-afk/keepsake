@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* ── OpenServ palette ─────────────────────────────── */
-  --canvas-white: #ffffff;
-  --ink-black: #000000;
-  --fog-gray: #f5f5f5;
-  --steel-gray: #a6a6a6;
-  --graphite: #4d4d4d;
-  --deep-blue: #5f79ff;
-  --deep-blue-hover: #4861e0;
-  --electric-green: #01fe93;
+  /* ── Keepsake warm palette ────────────────────────── */
+  --canvas-white: #f5ede3;
+  --ink-black: #1c1009;
+  --fog-gray: #ede3d7;
+  --steel-gray: #9c8a7c;
+  --graphite: #5c4a3a;
+  --deep-blue: #c96c10;
+  --deep-blue-hover: #b05c0a;
+  --electric-green: #c96c10;
 
   /* ── Semantic tokens ───────────────────────────────── */
   --background: var(--canvas-white);
@@ -20,16 +20,16 @@
 
   --accent: var(--deep-blue);
   --accent-hover: var(--deep-blue-hover);
-  --accent-glow: rgba(95, 121, 255, 0.20);
+  --accent-glow: rgba(201, 108, 16, 0.18);
   --convert: var(--electric-green);
 
   --border: rgba(0, 0, 0, 0.1);
   --glass: var(--fog-gray);
   --glass-border: rgba(0, 0, 0, 0.08);
 
-  /* Legacy aliases (warm theme names → light theme values) */
+  /* Warm orange aliases */
   --or: var(--deep-blue);
-  --or-light: var(--deep-blue);
+  --or-light: #e8843a;
   --or-glow: var(--accent-glow);
 
   --radius-buttons: 12px;
@@ -40,21 +40,20 @@
 }
 
 @theme inline {
-  --color-canvas-white: #ffffff;
-  --color-ink-black: #000000;
-  --color-fog-gray: #f5f5f5;
-  --color-steel-gray: #a6a6a6;
-  --color-graphite: #4d4d4d;
-  --color-deep-blue: #5f79ff;
-  --color-electric-green: #01fe93;
+  --color-canvas-white: #f5ede3;
+  --color-ink-black: #1c1009;
+  --color-fog-gray: #ede3d7;
+  --color-steel-gray: #9c8a7c;
+  --color-graphite: #5c4a3a;
+  --color-deep-blue: #c96c10;
+  --color-electric-green: #c96c10;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  /* Legacy alias so var(--font-lora) resolves to the new display face */
-  --font-lora: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-lora), ui-serif, Georgia, serif;
+  --font-lora: var(--font-lora), ui-serif, Georgia, serif;
 }
 
 html {
@@ -65,14 +64,14 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* OpenServ display headlines: light weight, tight tracking */
+/* Lora serif display headlines */
 .font-display {
-  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  font-family: var(--font-lora), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 @keyframes fade-in {
@@ -188,7 +187,7 @@ body {
 .aurora::after {
   width: 40rem; height: 40rem;
   top: -6rem; right: -8rem;
-  background: radial-gradient(circle at center, rgba(1, 254, 147, 0.16), transparent 65%);
+  background: radial-gradient(circle at center, rgba(201, 108, 16, 0.10), transparent 65%);
   animation: aurora-drift 22s ease-in-out infinite reverse;
 }
 
@@ -220,15 +219,15 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(95,121,255,0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(201,108,16,0.12), transparent);
   animation: sweep 1.8s ease-in-out infinite;
 }
 
 /* ── Pulsing scan ring ── */
 @keyframes scan-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(95,121,255,0.45); }
-  70%  { box-shadow: 0 0 0 14px rgba(95,121,255,0); }
-  100% { box-shadow: 0 0 0 0 rgba(95,121,255,0); }
+  0%   { box-shadow: 0 0 0 0 rgba(201,108,16,0.45); }
+  70%  { box-shadow: 0 0 0 14px rgba(201,108,16,0); }
+  100% { box-shadow: 0 0 0 0 rgba(201,108,16,0); }
 }
 .animate-scan-pulse { animation: scan-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
 
@@ -271,7 +270,7 @@ body::after {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(60% 60% at 50% -10%, rgba(95, 121, 255, 0.06), transparent 70%);
+    radial-gradient(60% 60% at 50% -10%, rgba(201, 108, 16, 0.05), transparent 70%);
 }
 /* Keep app content above the texture layers. */
 body > * { position: relative; z-index: 1; }

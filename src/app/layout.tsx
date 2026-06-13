@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Lora } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const spaceGrotesk = Space_Grotesk({
+const lora = Lora({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-lora",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#f5ede3",
 };
 
 export default function RootLayout({
@@ -55,8 +56,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-      <body className="bg-white text-black antialiased">{children}</body>
+    <html lang="en" className={`${inter.variable} ${lora.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
