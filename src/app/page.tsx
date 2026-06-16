@@ -42,6 +42,10 @@ const STEPS = [
 
 const FAQ = [
   {
+    q: 'Is my data safe? What do you do with my email access?',
+    a: 'Your data is legally protected under our Privacy Policy — a binding contract. We connect via Google\'s official OAuth, which means we never see your password. We only scan attachment metadata to find photos; we never read the text of your emails, never store your messages, and never share or sell your data to anyone. Ever.',
+  },
+  {
     q: 'Will you delete anything important?',
     a: 'No. We only ever move clutter to your Trash, where it stays recoverable for about 30 days before Gmail clears it — so nothing is gone for good. Obvious bulk mail (newsletters, promotions, receipts) can be cleared automatically, and for anything less certain we ask you first. You can review and undo everything.',
   },
@@ -175,9 +179,14 @@ export default function LandingPage() {
 
         <p className="mt-8 text-[13px]" style={{ color: 'var(--steel-gray)' }}>
           {WAITLIST_MODE
-            ? 'Free to join · No credit card · Be first when we launch'
+            ? 'Free to join · No credit card · Unsubscribe anytime'
             : 'No subscription · One-time payment · 30-day money-back guarantee'}
         </p>
+        {WAITLIST_MODE && (
+          <p className="mt-2 text-[12px]" style={{ color: 'var(--steel-gray)' }}>
+            Your email is private. We&apos;ll only use it to notify you when we launch — never shared, never sold.
+          </p>
+        )}
 
         <p className="mt-4 text-[15px] font-medium" style={{ color: 'var(--deep-blue)' }}>
           {DISCOVERY_LINE}
@@ -369,6 +378,29 @@ export default function LandingPage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── Security trust strip ────────────────────────── */}
+      <section style={{ background: 'var(--ink-black)' }} className="py-16">
+        <div className="mx-auto max-w-5xl px-6">
+          <ScrollReveal as="p" className="mb-10 text-center text-[13px] font-medium uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Your data is legally protected
+          </ScrollReveal>
+          <ScrollReveal stagger className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: '🔒', title: 'Encrypted end-to-end', body: 'All data is encrypted in transit and at rest. Industry-standard TLS everywhere.' },
+              { icon: '🚫', title: 'We never read your emails', body: 'We only scan attachment metadata. The text of your emails is never accessed or stored.' },
+              { icon: '⚖️', title: 'Legally binding privacy policy', body: 'Our Privacy Policy is a legal contract. We are prohibited from misusing your data.' },
+              { icon: '🙅', title: 'Never sold, never shared', body: 'Your email address and inbox access are never sold or shared with any third party.' },
+            ].map((item) => (
+              <div key={item.title} className="text-center">
+                <div className="mb-3 text-3xl">{item.icon}</div>
+                <h3 className="mb-2 text-[15px] font-medium text-white">{item.title}</h3>
+                <p className="text-[13px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>{item.body}</p>
+              </div>
+            ))}
+          </ScrollReveal>
         </div>
       </section>
 
