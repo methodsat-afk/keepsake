@@ -384,9 +384,9 @@ export default function LandingPage() {
       {/* ── Security trust strip ────────────────────────── */}
       <section style={{ background: 'var(--ink-black)' }} className="py-16">
         <div className="mx-auto max-w-5xl px-6">
-          <ScrollReveal as="p" className="mb-10 text-center text-[13px] font-medium uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          <p className="mb-10 text-center text-[13px] font-medium uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Your data is legally protected
-          </ScrollReveal>
+          </p>
           <ScrollReveal stagger className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: '🔒', title: 'Encrypted end-to-end', body: 'All data is encrypted in transit and at rest. Industry-standard TLS everywhere.' },
